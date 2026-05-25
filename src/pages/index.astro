@@ -1,87 +1,61 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { HomePage } from '../components/home-page';
 ---
 
 <Layout title="Anfal Watches — Premium Timepieces">
-  <section class="hero">
-    <div class="hero-content">
-      <h1 class="display-lg">Timeless<br />Elegance</h1>
-      <p class="body-lg hero-subtitle">Discover our curated collection of premium timepieces</p>
-      <a href="/watches" class="btn-primary">Explore Collection</a>
-    </div>
-  </section>
-
-  <section class="section featured">
-    <div class="section-inner">
-      <h2 class="headline-lg">Featured Watches</h2>
-      <div class="placeholder-grid">
-        {Array.from({ length: 4 }).map(() => (
-          <div class="placeholder-card">
-            <div class="placeholder-img"></div>
-            <div class="placeholder-meta">
-              <span class="label-sm">Category</span>
-              <h3 class="headline-md">Watch Name</h3>
-              <span class="price-display">$0</span>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <section class="section why">
-    <div class="section-inner">
-      <h2 class="headline-lg">Why Shop With Us</h2>
-      <div class="grid-3">
-        <div class="why-card">
-          <h3 class="headline-md">Authentic Products</h3>
-          <p class="body-md">Every watch is verified for authenticity and quality.</p>
-        </div>
-        <div class="why-card">
-          <h3 class="headline-md">Easy Ordering</h3>
-          <p class="body-md">Browse, order, and pay through WhatsApp with ease.</p>
-        </div>
-        <div class="why-card">
-          <h3 class="headline-md">Fast Delivery</h3>
-          <p class="body-md">Reliable shipping with tracking on every order.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section social">
-    <div class="section-inner">
-      <p class="body-lg">Follow us on Instagram</p>
-      <a href="#" class="btn-secondary">@anfalwatches</a>
-    </div>
-  </section>
+  <HomePage client:load />
 </Layout>
 
 <style>
-  .hero {
+  .home-hero {
+    position: relative;
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
     background: var(--bg-subtle);
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23dadada" width="100" height="100"/></svg>');
+    background-size: cover;
+    background-position: center;
+    transform: scale(1);
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%);
   }
 
   .hero-content {
-    max-width: 640px;
+    position: relative;
+    z-index: 1;
+    text-align: center;
     padding: 0 16px;
+    max-width: 720px;
+  }
+
+  .hero-title {
+    color: #ffffff;
+    margin: 0;
   }
 
   .hero-subtitle {
+    color: rgba(255,255,255,0.8);
     margin: 16px 0 32px;
-    color: var(--fg-muted);
   }
 
-  .btn-primary {
+  .hero-cta {
     display: inline-block;
     padding: 14px 32px;
-    background: var(--accent);
-    color: var(--bg-elevated);
+    background: #ffffff;
+    color: #000000;
     text-decoration: none;
     font-family: Inter, sans-serif;
     font-weight: 600;
@@ -91,30 +65,11 @@ import Layout from '../layouts/Layout.astro';
     transition: opacity 0.2s;
   }
 
-  .btn-primary:hover {
+  .hero-cta:hover {
     opacity: 0.85;
   }
 
-  .btn-secondary {
-    display: inline-block;
-    padding: 12px 28px;
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    text-decoration: none;
-    font-family: Inter, sans-serif;
-    font-weight: 600;
-    font-size: 0.875rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    transition: background 0.2s, color 0.2s;
-  }
-
-  .btn-secondary:hover {
-    background: var(--accent);
-    color: var(--bg-elevated);
-  }
-
-  .section {
+  .home-section {
     padding: 64px 16px;
   }
 
@@ -123,61 +78,135 @@ import Layout from '../layouts/Layout.astro';
     margin: 0 auto;
   }
 
-  .featured {
-    background: var(--bg);
+  .section-title {
+    margin: 0 0 32px;
   }
 
-  .placeholder-grid {
+  .featured-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
-    margin-top: 32px;
   }
 
-  .placeholder-card {
+  .featured-card {
     display: flex;
     flex-direction: column;
+    text-decoration: none;
+    color: var(--fg);
+    transition: transform 0.3s;
   }
 
-  .placeholder-img {
+  .featured-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .card-img {
     aspect-ratio: 1;
+    overflow: hidden;
+  }
+
+  .card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .card-img.placeholder {
     background: var(--bg-subtle);
     border: 1px solid var(--border);
   }
 
-  .placeholder-meta {
+  .card-meta {
     padding: 16px 0;
     display: flex;
     flex-direction: column;
     gap: 4px;
   }
 
-  .grid-3 {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 32px;
+  .view-all-wrap {
+    text-align: center;
     margin-top: 32px;
   }
 
-  .why {
+  .view-all {
+    display: inline-block;
+    padding: 12px 28px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    text-decoration: none;
+    font-family: Inter, sans-serif;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .view-all:hover {
+    background: var(--accent);
+    color: var(--bg-elevated);
+  }
+
+  .why-section {
     background: var(--bg-subtle);
   }
 
-  .social {
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .why-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .why-icon {
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .why-item h3 {
+    margin: 0;
+  }
+
+  .why-item p {
+    margin: 0;
+    color: var(--fg-muted);
+  }
+
+  .social-section {
     text-align: center;
   }
 
+  .social-link {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 12px 28px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .social-link:hover {
+    background: var(--accent);
+    color: var(--bg-elevated);
+  }
+
   @media (min-width: 640px) {
-    .placeholder-grid {
+    .featured-grid {
       grid-template-columns: repeat(3, 1fr);
     }
-    .grid-3 {
+    .why-grid {
       grid-template-columns: repeat(3, 1fr);
     }
   }
 
   @media (min-width: 1024px) {
-    .placeholder-grid {
+    .featured-grid {
       grid-template-columns: repeat(4, 1fr);
     }
   }
