@@ -2,6 +2,29 @@ import type { APIRoute } from 'astro';
 import { createSupabaseServerClient } from '../../../lib/supabase-server';
 import { buildAdminUrl } from '../../../lib/whatsapp';
 
+export const GET: APIRoute = async ({ url, cookies }) => {
+  const supabase = createSupabaseServerClient(cookies);
+
+  const status = url.searchParams.get('status');
+
+  let query = supabase
+    .from('orders')
+    .select('*, products:product_id(name)')
+    .order('created_at', { ascending: false });
+
+  if (status) query = query.eq('status', status);
+
+  const { data, error } = await query;
+
+  if (error) {
+    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+  }
+
+  return new Response(JSON.stringify(data), {
+    headers: { 'Content-Type': 'application/json' },
+  });
+};
+
 export const POST: APIRoute = async ({ request, cookies }) => {
   const supabase = createSupabaseServerClient(cookies);
   const body = await request.json();
