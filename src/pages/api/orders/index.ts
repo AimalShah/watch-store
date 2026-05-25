@@ -2,8 +2,8 @@ import type { APIRoute } from 'astro';
 import { createSupabaseServerClient } from '../../../lib/supabase-server';
 import { buildAdminUrl } from '../../../lib/whatsapp';
 
-export const GET: APIRoute = async ({ url, cookies }) => {
-  const supabase = createSupabaseServerClient(cookies);
+export const GET: APIRoute = async ({ url, request, cookies }) => {
+  const supabase = createSupabaseServerClient(request, cookies);
 
   const status = url.searchParams.get('status');
 
@@ -26,7 +26,7 @@ export const GET: APIRoute = async ({ url, cookies }) => {
 };
 
 export const POST: APIRoute = async ({ request, cookies }) => {
-  const supabase = createSupabaseServerClient(cookies);
+  const supabase = createSupabaseServerClient(request, cookies);
   const body = await request.json();
 
   if (!body.product_id || !body.quantity || !body.customer_name || !body.customer_phone || !body.delivery_address) {

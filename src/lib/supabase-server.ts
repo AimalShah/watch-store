@@ -1,7 +1,15 @@
 import { createServerClient } from '@supabase/ssr';
 import type { AstroCookies } from 'astro';
 
-export function createSupabaseServerClient(cookies: AstroCookies) {
+function parseCookiesFromHeader(header: string | null): { name: string; value: string }[] {
+  if (!header) return [];
+  return header.split(';').map((pair) => {
+    const [name, ...rest] = pair.split('=');
+    return { name: name.trim(), value: rest.join('=').trim() };
+  });
+}
+
+export function createSupabaseServerClient(request: Request, cookies: AstroCookies) {
   const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
 
@@ -12,7 +20,7 @@ export function createSupabaseServerClient(cookies: AstroCookies) {
   return createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
       getAll() {
-        return cookies.getAll();
+        return parseCookiesFromHeader(request.headers.get('cookie'));
       },
       setAll(cookiesToSet) {
         for (const { name, value, options } of cookiesToSet) {

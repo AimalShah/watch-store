@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { createSupabaseServerClient } from '../../../lib/supabase-server';
 
 export const PATCH: APIRoute = async ({ params, request, cookies }) => {
-  const supabase = createSupabaseServerClient(cookies);
+  const supabase = createSupabaseServerClient(request, cookies);
   const body = await request.json();
 
   const updates: Record<string, unknown> = {};
@@ -36,8 +36,8 @@ export const PATCH: APIRoute = async ({ params, request, cookies }) => {
   });
 };
 
-export const DELETE: APIRoute = async ({ params, cookies }) => {
-  const supabase = createSupabaseServerClient(cookies);
+export const DELETE: APIRoute = async ({ params, request, cookies }) => {
+  const supabase = createSupabaseServerClient(request, cookies);
 
   const { error } = await supabase
     .from('products')

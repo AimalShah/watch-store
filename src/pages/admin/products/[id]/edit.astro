@@ -5,7 +5,7 @@ import { ProductForm } from '../../../../components/admin/product-form';
 import { createSupabaseServerClient } from '../../../../lib/supabase-server';
 import '../../../../styles/admin.css';
 
-const supabase = createSupabaseServerClient(Astro.cookies);
+const supabase = createSupabaseServerClient(Astro.request, Astro.cookies);
 const { data: product } = await supabase
   .from('products')
   .select('*')

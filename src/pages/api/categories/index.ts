@@ -1,8 +1,8 @@
 import type { APIRoute } from 'astro';
 import { createSupabaseServerClient } from '../../../lib/supabase-server';
 
-export const GET: APIRoute = async ({ cookies }) => {
-  const supabase = createSupabaseServerClient(cookies);
+export const GET: APIRoute = async ({ request, cookies }) => {
+  const supabase = createSupabaseServerClient(request, cookies);
   const { data, error } = await supabase
     .from('categories')
     .select('*, products:products(count)')
@@ -18,7 +18,7 @@ export const GET: APIRoute = async ({ cookies }) => {
 };
 
 export const POST: APIRoute = async ({ request, cookies }) => {
-  const supabase = createSupabaseServerClient(cookies);
+  const supabase = createSupabaseServerClient(request, cookies);
   const body = await request.json();
 
   if (!body.name) {

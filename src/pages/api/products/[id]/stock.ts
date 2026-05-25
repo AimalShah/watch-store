@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { createSupabaseServerClient } from '../../../../lib/supabase-server';
 
 export const PATCH: APIRoute = async ({ params, request, cookies }) => {
-  const supabase = createSupabaseServerClient(cookies);
+  const supabase = createSupabaseServerClient(request, cookies);
   const body = await request.json();
 
   if (body.stock === undefined || body.stock < 0) {

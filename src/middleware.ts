@@ -4,7 +4,7 @@ import { createSupabaseServerClient } from './lib/supabase-server';
 const ADMIN_LOGIN = '/admin/login';
 
 export const onRequest = defineMiddleware(async (context, next) => {
-  const { url, cookies, redirect } = context;
+  const { url, request, cookies, redirect } = context;
 
   if (!url.pathname.startsWith('/admin')) {
     return next();
@@ -14,7 +14,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return next();
   }
 
-  const supabase = createSupabaseServerClient(cookies);
+  const supabase = createSupabaseServerClient(request, cookies);
   const { data } = await supabase.auth.getSession();
 
   if (!data.session) {

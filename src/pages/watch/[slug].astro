@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import { ProductDetail } from '../../components/product-detail';
 import { createSupabaseServerClient } from '../../lib/supabase-server';
 
-const supabase = createSupabaseServerClient(Astro.cookies);
+const supabase = createSupabaseServerClient(Astro.request, Astro.cookies);
 const { data: product } = await supabase
   .from('products')
   .select('*, categories:category_id(name, slug)')
