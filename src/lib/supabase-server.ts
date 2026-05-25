@@ -2,8 +2,8 @@ import { createServerClient } from '@supabase/ssr';
 import type { AstroCookies } from 'astro';
 
 export function createSupabaseServerClient(cookies: AstroCookies) {
-  const supabaseUrl = import.meta.env.SUPABASE_URL;
-  const supabaseAnonKey = import.meta.env.SUPABASE_ANON_KEY;
+  const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseAnonKey) {
     throw new Error('Missing SUPABASE_URL or SUPABASE_ANON_KEY environment variables');

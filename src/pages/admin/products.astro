@@ -1,0 +1,12 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { AdminLayout } from '../../components/admin/admin-layout';
+import { ProductManager } from '../../components/admin/product-manager';
+import '../../styles/admin.css';
+---
+
+<Layout title="Products — Anfal Watches Admin">
+  <AdminLayout client:load>
+    <ProductManager client:load />
+  </AdminLayout>
+</Layout>
