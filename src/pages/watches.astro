@@ -1,0 +1,282 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Catalog } from '../components/catalog';
+---
+
+<Layout title="Watches — Anfal Watches">
+  <div class="catalog-page">
+    <Catalog client:load />
+  </div>
+</Layout>
+
+<style>
+  .catalog-page {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 32px 16px;
+  }
+
+  .catalog-layout {
+    display: flex;
+    gap: 32px;
+    position: relative;
+  }
+
+  .catalog-sidebar {
+    width: 240px;
+    flex-shrink: 0;
+  }
+
+  .filter-section {
+    margin-bottom: 24px;
+  }
+
+  .filter-section h3 {
+    margin: 0 0 8px;
+    color: var(--fg-muted);
+  }
+
+  .filter-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--fg);
+    font-family: Inter, sans-serif;
+    font-size: 0.875rem;
+    box-sizing: border-box;
+  }
+
+  .filter-input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .category-chip {
+    text-align: left;
+    padding: 6px 0;
+    background: none;
+    border: none;
+    color: var(--fg-muted);
+    font-family: Inter, sans-serif;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .category-chip:hover,
+  .category-chip.active {
+    color: var(--accent);
+  }
+
+  .clear-btn {
+    background: none;
+    border: none;
+    color: var(--fg-subtle);
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .clear-btn:hover {
+    color: var(--accent);
+  }
+
+  .catalog-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .result-count {
+    color: var(--fg-muted);
+    margin: 0 0 16px;
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .product-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: var(--fg);
+    transition: transform 0.3s;
+  }
+
+  .product-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .card-image {
+    aspect-ratio: 1;
+    overflow: hidden;
+  }
+
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s;
+  }
+
+  .product-card:hover .card-image img {
+    transform: scale(1.05);
+  }
+
+  .card-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+  }
+
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px 0;
+  }
+
+  .card-category {
+    color: var(--fg-subtle);
+  }
+
+  .card-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0;
+  }
+
+  .btn-whatsapp {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    background: var(--accent);
+    color: var(--bg-elevated);
+    border: none;
+    font-family: Inter, sans-serif;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-align: center;
+    box-sizing: border-box;
+    transition: opacity 0.2s;
+  }
+
+  .btn-whatsapp:hover {
+    opacity: 0.85;
+  }
+
+  .load-more-wrap {
+    text-align: center;
+    margin-top: 32px;
+  }
+
+  .btn-load-more {
+    padding: 12px 32px;
+    background: none;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: Inter, sans-serif;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .btn-load-more:hover:not(:disabled) {
+    background: var(--accent);
+    color: var(--bg-elevated);
+  }
+
+  .btn-load-more:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 64px 16px;
+  }
+
+  .empty-state p {
+    color: var(--fg-muted);
+    margin: 0 0 16px;
+  }
+
+  .filter-toggle {
+    display: none;
+    margin-bottom: 16px;
+    padding: 10px 16px;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+    color: var(--fg);
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+  }
+
+  .filter-overlay {
+    display: none;
+  }
+
+  @media (max-width: 640px) {
+    .catalog-sidebar {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 280px;
+      background: var(--bg-elevated);
+      z-index: 100;
+      padding: 24px 16px;
+      overflow-y: auto;
+    }
+
+    .catalog-sidebar.open {
+      display: block;
+    }
+
+    .filter-toggle {
+      display: block;
+    }
+
+    .filter-overlay {
+      display: block;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 99;
+    }
+
+    .product-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .card-body {
+      padding: 12px 0;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .product-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

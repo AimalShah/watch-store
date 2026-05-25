@@ -5,25 +5,53 @@ export const GET: APIRoute = async ({ url, cookies }) => {
   const supabase = createSupabaseServerClient(cookies);
 
   const category = url.searchParams.get('category');
-  const featured = url.searchParams.get('featured');
+  const search = url.searchParams.get('search');
+  const sort = url.searchParams.get('sort') || 'newest';
+  const page = parseInt(url.searchParams.get('page') || '1');
+  const limit = parseInt(url.searchParams.get('limit') || '12');
+  const offset = (page - 1) * limit;
 
-  let query = supabase
+  let countQuery = supabase.from('products').select('*', { count: 'exact', head: true });
+  let dataQuery = supabase
     .from('products')
-    .select('*, categories:category_id(name, slug)')
-    .order('created_at', { ascending: false });
+    .select('*, categories:category_id(name, slug)');
 
-  if (category) query = query.eq('category_id', category);
-  if (featured === 'true') query = query.eq('featured', true);
+  if (category) {
+    countQuery = countQuery.eq('category_id', category);
+    dataQuery = dataQuery.eq('category_id', category);
+  }
 
-  const { data, error } = await query;
+  if (search) {
+    countQuery = countQuery.ilike('name', `%${search}%`);
+    dataQuery = dataQuery.ilike('name', `%${search}%`);
+  }
+
+  switch (sort) {
+    case 'price_asc':
+      dataQuery = dataQuery.order('price', { ascending: true });
+      break;
+    case 'price_desc':
+      dataQuery = dataQuery.order('price', { ascending: false });
+      break;
+    default:
+      dataQuery = dataQuery.order('created_at', { ascending: false });
+  }
+
+  const { count, error: countError } = await countQuery;
+  if (countError) {
+    return new Response(JSON.stringify({ error: countError.message }), { status: 500 });
+  }
+
+  const { data, error } = await dataQuery.range(offset, offset + limit - 1);
 
   if (error) {
     return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   }
 
-  return new Response(JSON.stringify(data), {
-    headers: { 'Content-Type': 'application/json' },
-  });
+  return new Response(
+    JSON.stringify({ data, total: count, page, limit }),
+    { headers: { 'Content-Type': 'application/json' } }
+  );
 };
 
 export const POST: APIRoute = async ({ request, cookies }) => {
