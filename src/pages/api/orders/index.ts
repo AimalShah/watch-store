@@ -4,7 +4,6 @@ import { buildAdminUrl } from '../../../lib/whatsapp';
 
 export const GET: APIRoute = async ({ url, request, cookies }) => {
   const supabase = createSupabaseServerClient(request, cookies);
-
   const status = url.searchParams.get('status');
 
   let query = supabase

@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface Product {
   id: string;
@@ -9,12 +11,35 @@ interface Product {
   categories: { name: string; slug: string } | null;
 }
 
+const DEMO_PRODUCTS: Product[] = [
+  { id: '1', name: 'Rolex Submariner Date', slug: 'rolex-submariner-date', price: 10500, images: ['https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=600&q=80'], categories: { name: 'Rolex', slug: 'rolex' } },
+  { id: '2', name: 'Omega Speedmaster Moonwatch', slug: 'omega-speedmaster-moonwatch', price: 7200, images: ['https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=600&q=80'], categories: { name: 'Omega', slug: 'omega' } },
+  { id: '3', name: 'Tag Heuer Carrera', slug: 'tag-heuer-carrera', price: 5400, images: ['https://images.unsplash.com/photo-1614164185128-e4ec99c2c0e8?w=600&q=80'], categories: { name: 'Tag Heuer', slug: 'tag-heuer' } },
+  { id: '4', name: 'Seiko Presage Cocktail Time', slug: 'seiko-presage-cocktail-time', price: 450, images: ['https://images.unsplash.com/photo-1589913278995-82c7ae8fa70f?w=600&q=80'], categories: { name: 'Seiko', slug: 'seiko' } },
+  { id: '5', name: 'Rolex Daytona', slug: 'rolex-daytona', price: 28500, images: ['https://images.unsplash.com/photo-1587836374828-4dbafa94cfbe?w=600&q=80'], categories: { name: 'Rolex', slug: 'rolex' } },
+  { id: '6', name: 'Omega Seamaster Diver', slug: 'omega-seamaster-diver-300m', price: 5800, images: ['https://images.unsplash.com/photo-1589137279397-1520e0e4e3d9?w=600&q=80'], categories: { name: 'Omega', slug: 'omega' } },
+  { id: '7', name: 'Tag Heuer Monaco', slug: 'tag-heuer-monaco', price: 6750, images: ['https://images.unsplash.com/photo-1612036782180-6f08205f232b?w=600&q=80'], categories: { name: 'Tag Heuer', slug: 'tag-heuer' } },
+  { id: '8', name: 'Citizen Promaster Diver', slug: 'citizen-promaster-diver', price: 375, images: ['https://images.unsplash.com/photo-1589913278995-82c7ae8fa70f?w=600&q=80'], categories: { name: 'Citizen', slug: 'citizen' } },
+];
+
+function SkeletonCard() {
+  return (
+    <Card className="overflow-hidden">
+      <div className="aspect-square animate-pulse bg-muted" />
+      <CardContent className="space-y-2 p-4">
+        <div className="h-3 w-16 animate-pulse rounded bg-muted" />
+        <div className="h-4 w-32 animate-pulse rounded bg-muted" />
+        <div className="h-4 w-20 animate-pulse rounded bg-muted" />
+      </CardContent>
+    </Card>
+  );
+}
+
 export function HomePage() {
   const heroRef = useRef<HTMLDivElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
-  const whyRef = useRef<HTMLDivElement>(null);
   const [featured, setFeatured] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let lenis: InstanceType<typeof import('lenis').default> | null = null;
@@ -33,9 +58,6 @@ export function HomePage() {
       requestAnimationFrame(raf);
 
       const heroContent = heroContentRef.current;
-      const cards = cardsRef.current;
-      const why = whyRef.current;
-
       if (heroContent) {
         gsap.fromTo(
           heroContent.children,
@@ -43,50 +65,24 @@ export function HomePage() {
           { y: 0, opacity: 1, duration: 0.8, stagger: 0.2, ease: 'power2.out' }
         );
       }
-
-      if (cards) {
-        const cardEls = cards.querySelectorAll('.featured-card');
-        ScrollTrigger.create({
-          trigger: cards,
-          start: 'top 85%',
-          onEnter: () => {
-            gsap.to(cardEls, {
-              y: 0,
-              opacity: 1,
-              duration: 0.6,
-              stagger: 0.1,
-              ease: 'power2.out',
-            });
-          },
-          once: true,
-        });
-      }
-
-      if (why) {
-        const items = why.querySelectorAll('.why-item');
-        ScrollTrigger.create({
-          trigger: why,
-          start: 'top 85%',
-          onEnter: () => {
-            gsap.to(items, {
-              y: 0,
-              opacity: 1,
-              duration: 0.5,
-              stagger: 0.15,
-              ease: 'power2.out',
-            });
-          },
-          once: true,
-        });
-      }
     }
 
     init();
 
-    fetch('/api/products?featured=true&limit=8')
-      .then((r) => r.json())
-      .then((json) => setFeatured(json.data || json))
-      .catch(() => {});
+    fetch('/api/products?limit=8')
+      .then((r) => {
+        if (!r.ok) throw new Error('Failed to fetch');
+        return r.json();
+      })
+      .then((json) => {
+        const data = json.data || json;
+        setFeatured(Array.isArray(data) && data.length > 0 ? data : DEMO_PRODUCTS);
+        setLoading(false);
+      })
+      .catch(() => {
+        setFeatured(DEMO_PRODUCTS);
+        setLoading(false);
+      });
 
     return () => {
       if (lenis) lenis.destroy();
@@ -98,98 +94,85 @@ export function HomePage() {
 
   return (
     <main>
-      <section className="home-hero" ref={heroRef}>
-        <div className="hero-bg" />
-        <div className="hero-overlay" />
-        <div className="hero-content" ref={heroContentRef}>
-          <h1 className="display-lg hero-title">Timeless Elegance</h1>
-          <p className="body-lg hero-subtitle">
+      <section ref={heroRef} className="relative flex min-h-[90vh] items-center justify-center overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src="https://images.unsplash.com/photo-1614164185128-e4ec99c2c0e8?w=1920&q=80"
+            alt="Luxury watches"
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
+        </div>
+        <div className="relative z-10 mx-auto max-w-3xl px-4 text-center" ref={heroContentRef}>
+          <p className="mb-4 text-sm font-medium uppercase tracking-[0.2em] text-secondary">
+            Since 2024
+          </p>
+          <h1 className="mb-6 font-heading text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl">
+            Timeless Elegance
+          </h1>
+          <p className="mb-8 text-lg text-white/80">
             Discover our curated collection of premium timepieces
           </p>
-          <a href="/watches" className="hero-cta">Explore Collection</a>
+          <Button asChild size="lg" className="rounded-none border-white/20 bg-white/10 px-10 text-white backdrop-blur-sm hover:bg-white/20">
+            <a href="/watches">Explore Collection</a>
+          </Button>
         </div>
       </section>
 
-      <section className="home-section">
-        <div className="section-inner">
-          <h2 className="headline-lg section-title">Featured Watches</h2>
-          <div className="featured-grid" ref={cardsRef}>
-            {featured.length === 0 && (
-              <>
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="featured-card" style={{ y: 40, opacity: 0 }}>
-                    <div className="card-img placeholder" />
-                    <div className="card-meta">
-                      <span className="label-sm">Category</span>
-                      <h3 className="headline-md">Watch Name</h3>
-                      <span className="price-display">$0</span>
+      <section className="py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-12 text-center">
+            <p className="mb-2 text-sm font-medium uppercase tracking-[0.2em] text-secondary">
+              Collection
+            </p>
+            <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl">
+              Featured Watches
+            </h2>
+          </div>
+
+          {loading ? (
+            <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <SkeletonCard key={i} />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
+              {featured.map((p) => (
+                <a key={p.id} href={`/watch/${p.slug}`} className="group">
+                  <Card className="overflow-hidden transition-all duration-300 group-hover:shadow-lg">
+                    <div className="aspect-square overflow-hidden bg-muted">
+                      {p.images?.[0] ? (
+                        <img
+                          src={p.images[0]}
+                          alt={p.name}
+                          loading="lazy"
+                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                      ) : (
+                        <div className="h-full w-full bg-muted" />
+                      )}
                     </div>
-                  </div>
-                ))}
-              </>
-            )}
-            {featured.map((p) => (
-              <a key={p.id} href={`/watch/${p.slug}`} className="featured-card" style={{ y: 40, opacity: 0 }}>
-                <div className="card-img">
-                  {p.images?.[0] ? (
-                    <img src={p.images[0]} alt={p.name} loading="lazy" />
-                  ) : (
-                    <div className="card-img placeholder" />
-                  )}
-                </div>
-                <div className="card-meta">
-                  <span className="label-sm">{p.categories?.name ?? ''}</span>
-                  <h3 className="headline-md">{p.name}</h3>
-                  <span className="price-display">${Number(p.price).toLocaleString()}</span>
-                </div>
-              </a>
-            ))}
-          </div>
-          <div className="view-all-wrap">
-            <a href="/watches" className="view-all">View All Watches</a>
-          </div>
-        </div>
-      </section>
+                    <CardContent className="space-y-1 p-4">
+                      <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                        {p.categories?.name ?? ''}
+                      </p>
+                      <h3 className="font-heading text-base font-semibold">{p.name}</h3>
+                      <p className="font-heading text-lg font-bold text-secondary">
+                        ${Number(p.price).toLocaleString()}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </a>
+              ))}
+            </div>
+          )}
 
-      <section className="home-section why-section">
-        <div className="section-inner" ref={whyRef}>
-          <h2 className="headline-lg section-title">Why Shop With Us</h2>
-          <div className="why-grid">
-            <div className="why-item" style={{ y: 30, opacity: 0 }}>
-              <div className="why-icon">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                </svg>
-              </div>
-              <h3 className="headline-md">Authentic Products</h3>
-              <p className="body-md">Every watch is verified for authenticity and quality.</p>
-            </div>
-            <div className="why-item" style={{ y: 30, opacity: 0 }}>
-              <div className="why-icon">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
-                </svg>
-              </div>
-              <h3 className="headline-md">Best Prices</h3>
-              <p className="body-md">Competitive pricing on all our premium timepieces.</p>
-            </div>
-            <div className="why-item" style={{ y: 30, opacity: 0 }}>
-              <div className="why-icon">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
-                </svg>
-              </div>
-              <h3 className="headline-md">Easy Ordering</h3>
-              <p className="body-md">Browse, order, and pay through WhatsApp in minutes.</p>
-            </div>
+          <div className="mt-12 text-center">
+            <Button asChild variant="outline" size="lg" className="rounded-none px-10">
+              <a href="/watches">View All Watches</a>
+            </Button>
           </div>
-        </div>
-      </section>
-
-      <section className="home-section social-section">
-        <div className="section-inner">
-          <p className="body-lg">Follow us on Instagram</p>
-          <a href="#" className="social-link label-sm">@anfalwatches</a>
         </div>
       </section>
     </main>

@@ -7,11 +7,7 @@ export const PATCH: APIRoute = async ({ params, request, cookies }) => {
 
   const updates: Record<string, unknown> = {};
   if (body.name !== undefined) updates.name = body.name;
-  if (body.slug !== undefined) {
-    updates.slug = body.slug;
-  } else if (body.name !== undefined) {
-    updates.slug = body.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  }
+  if (body.slug !== undefined) updates.slug = body.slug;
   if (body.description !== undefined) updates.description = body.description;
   if (body.price !== undefined) updates.price = body.price;
   if (body.stock !== undefined) updates.stock = body.stock;

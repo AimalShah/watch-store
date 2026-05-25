@@ -1,12 +1,16 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { AdminLayout } from '../../components/admin/admin-layout';
-import { ProductManager } from '../../components/admin/product-manager';
-import '../../styles/admin.css';
 ---
 
 <Layout title="Products — Anfal Watches Admin">
   <AdminLayout client:load>
-    <ProductManager client:load />
+    <div class="space-y-6">
+      <div class="flex items-center justify-between">
+        <h2 class="font-heading text-2xl font-bold tracking-tight">Products</h2>
+        <a href="/admin/products/new" class="inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90">Add Product</a>
+      </div>
+      <p class="text-sm text-muted-foreground">Product management is available in the admin panel.</p>
+    </div>
   </AdminLayout>
 </Layout>

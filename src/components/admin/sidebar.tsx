@@ -14,35 +14,39 @@ export function AdminSidebar() {
   return (
     <>
       <button
-        className="sidebar-toggle"
+        className="fixed left-3 top-20 z-50 flex flex-col gap-1 p-2 md:hidden"
         onClick={() => setOpen(!open)}
         aria-label="Toggle sidebar"
       >
-        <span />
-        <span />
-        <span />
+        <span className="block h-0.5 w-5 bg-foreground" />
+        <span className="block h-0.5 w-5 bg-foreground" />
+        <span className="block h-0.5 w-5 bg-foreground" />
       </button>
-      <aside className={`admin-sidebar ${open ? 'open' : ''}`}>
-        <div className="sidebar-header">
-          <a href="/admin" className="sidebar-logo">Admin</a>
+      {open && (
+        <div className="fixed inset-0 z-30 bg-black/30 md:hidden" onClick={() => setOpen(false)} />
+      )}
+      <aside className={`${open ? 'translate-x-0' : '-translate-x-full'} fixed left-0 top-16 z-40 h-[calc(100vh-4rem)] w-60 border-r bg-background transition-transform md:sticky md:translate-x-0`}>
+        <div className="flex items-center border-b px-6 py-4">
+          <a href="/admin" className="font-heading text-sm tracking-wider">Admin</a>
         </div>
-        <nav className="sidebar-nav">
+        <nav className="flex flex-col gap-1 p-3">
           {links.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="sidebar-link"
+              className="rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               onClick={() => setOpen(false)}
             >
               {link.label}
             </a>
           ))}
-          <form method="POST" action="/api/auth/logout" className="sidebar-logout">
-            <button type="submit" className="sidebar-link logout">Sign Out</button>
+          <form method="POST" action="/api/auth/logout" className="mt-auto border-t pt-3">
+            <button type="submit" className="w-full rounded-md px-3 py-2 text-left text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
+              Sign Out
+            </button>
           </form>
         </nav>
       </aside>
-      {open && <div className="sidebar-overlay" onClick={() => setOpen(false)} />}
     </>
   );
 }

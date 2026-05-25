@@ -1,10 +1,6 @@
 import type { APIRoute } from 'astro';
 import { createSupabaseServerClient } from '../../../lib/supabase-server';
 
-function slugify(text: string) {
-  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-}
-
 export const PATCH: APIRoute = async ({ params, request, cookies }) => {
   const supabase = createSupabaseServerClient(request, cookies);
   const body = await request.json();
@@ -13,16 +9,11 @@ export const PATCH: APIRoute = async ({ params, request, cookies }) => {
     return new Response(JSON.stringify({ error: 'Name is required' }), { status: 400 });
   }
 
-  const updates: Record<string, string> = { name: body.name };
-  if (body.slug) {
-    updates.slug = body.slug;
-  } else if (body.name) {
-    updates.slug = slugify(body.name);
-  }
+  const slug = body.slug || body.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
   const { data, error } = await supabase
     .from('categories')
-    .update(updates)
+    .update({ name: body.name, slug })
     .eq('id', params.id)
     .select()
     .single();
@@ -38,18 +29,6 @@ export const PATCH: APIRoute = async ({ params, request, cookies }) => {
 
 export const DELETE: APIRoute = async ({ params, request, cookies }) => {
   const supabase = createSupabaseServerClient(request, cookies);
-
-  const { count } = await supabase
-    .from('products')
-    .select('*', { count: 'exact', head: true })
-    .eq('category_id', params.id);
-
-  if (count && count > 0) {
-    return new Response(
-      JSON.stringify({ error: 'Cannot delete category with existing products' }),
-      { status: 409 }
-    );
-  }
 
   const { error } = await supabase
     .from('categories')

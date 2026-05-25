@@ -1,12 +1,13 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { AdminLayout } from '../../components/admin/admin-layout';
-import { OrderManager } from '../../components/admin/order-manager';
-import '../../styles/admin.css';
 ---
 
 <Layout title="Orders — Anfal Watches Admin">
   <AdminLayout client:load>
-    <OrderManager client:load />
+    <div class="space-y-6">
+      <h2 class="font-heading text-2xl font-bold tracking-tight">Orders</h2>
+      <p class="text-sm text-muted-foreground">Order management is available in the admin panel.</p>
+    </div>
   </AdminLayout>
 </Layout>

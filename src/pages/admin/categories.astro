@@ -1,12 +1,13 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { AdminLayout } from '../../components/admin/admin-layout';
-import { CategoryManager } from '../../components/admin/category-manager';
-import '../../styles/admin.css';
 ---
 
 <Layout title="Categories — Anfal Watches Admin">
   <AdminLayout client:load>
-    <CategoryManager client:load />
+    <div class="space-y-6">
+      <h2 class="font-heading text-2xl font-bold tracking-tight">Categories</h2>
+      <p class="text-sm text-muted-foreground">Category management is available in the admin panel.</p>
+    </div>
   </AdminLayout>
 </Layout>

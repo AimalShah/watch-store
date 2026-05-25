@@ -1,103 +1,24 @@
 ---
 import Layout from '../layouts/Layout.astro';
-
-const faqs = [
-  {
-    q: 'How do I place an order?',
-    a: 'Browse our catalog, select a watch, fill in your details on the product page, and submit. You\'ll be redirected to WhatsApp where you can confirm your order directly with us.',
-  },
-  {
-    q: 'Can I pay via WhatsApp?',
-    a: 'Yes. Once you submit your order, we\'ll discuss payment options (bank transfer, etc.) through WhatsApp chat.',
-  },
-  {
-    q: 'How long does delivery take?',
-    a: 'Delivery typically takes 3-5 business days within Pakistan. We\'ll share tracking details once shipped.',
-  },
-  {
-    q: 'Are the watches authentic?',
-    a: 'Absolutely. All our watches are sourced from authorized distributors and verified for authenticity before listing.',
-  },
-  {
-    q: 'What is your return policy?',
-    a: 'We accept returns within 7 days of delivery if the watch is in original condition. Contact us on WhatsApp to initiate a return.',
-  },
-  {
-    q: 'Do you offer warranty?',
-    a: 'All watches come with a manufacturer\'s warranty. Contact us for specific warranty details on any product.',
-  },
-];
 ---
 
 <Layout title="FAQ — Anfal Watches">
-  <div class="page">
-    <div class="page-inner">
-      <h1 class="headline-lg">Frequently Asked Questions</h1>
-      <div class="faq-list">
-        {faqs.map((faq, i) => (
-          <details class="faq-item" name="faq">
-            <summary class="faq-question body-lg">{faq.q}</summary>
-            <p class="faq-answer body-md">{faq.a}</p>
-          </details>
-        ))}
+  <div class="mx-auto max-w-3xl px-4 py-24 sm:px-6 lg:px-8">
+    <p class="mb-2 text-sm font-medium uppercase tracking-[0.2em] text-secondary">FAQ</p>
+    <h1 class="mb-8 font-heading text-4xl font-bold tracking-tight">Frequently Asked Questions</h1>
+    <div class="space-y-8">
+      <div>
+        <h2 class="mb-2 font-heading text-lg font-semibold">How do I place an order?</h2>
+        <p class="text-muted-foreground">Browse our collection, find a watch you love, and use the order form on the product page. We'll connect with you via WhatsApp to confirm your order.</p>
+      </div>
+      <div>
+        <h2 class="mb-2 font-heading text-lg font-semibold">Are your watches authentic?</h2>
+        <p class="text-muted-foreground">Yes, every watch we sell is 100% authentic. We source directly from authorized distributors and verify each timepiece before listing.</p>
+      </div>
+      <div>
+        <h2 class="mb-2 font-heading text-lg font-semibold">What payment methods do you accept?</h2>
+        <p class="text-muted-foreground">Payment is handled through WhatsApp chat. We accept bank transfers and other methods as agreed during the conversation.</p>
       </div>
     </div>
   </div>
 </Layout>
-
-<style>
-  .page {
-    padding: 64px 16px;
-  }
-
-  .page-inner {
-    max-width: 720px;
-    margin: 0 auto;
-  }
-
-  .page h1 {
-    margin: 0 0 32px;
-  }
-
-  .faq-list {
-    display: flex;
-    flex-direction: column;
-    border-top: 1px solid var(--border);
-  }
-
-  .faq-item {
-    border-bottom: 1px solid var(--border);
-    padding: 16px 0;
-  }
-
-  .faq-question {
-    cursor: pointer;
-    margin: 0;
-    color: var(--fg);
-    list-style: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .faq-question::-webkit-details-marker {
-    display: none;
-  }
-
-  .faq-question::after {
-    content: '+';
-    font-size: 1.25rem;
-    color: var(--fg-muted);
-    transition: transform 0.2s;
-  }
-
-  details[open] .faq-question::after {
-    content: '−';
-  }
-
-  .faq-answer {
-    margin: 12px 0 0;
-    color: var(--fg-muted);
-    padding-right: 32px;
-  }
-</style>

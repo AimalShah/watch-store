@@ -1,16 +1,13 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { AdminLayout } from '../../components/admin/admin-layout';
-import '../../styles/admin.css';
 ---
 
 <Layout title="Dashboard — Anfal Watches Admin">
   <AdminLayout client:load>
-    <div class="admin-header">
-      <h2 class="headline-md">Dashboard</h2>
+    <div class="space-y-4">
+      <h2 class="font-heading text-2xl font-bold tracking-tight">Dashboard</h2>
+      <p class="text-muted-foreground">Welcome to the admin panel.</p>
     </div>
-    <p class="body-md" style={{ color: 'var(--fg-muted)' }}>
-      Welcome to the admin panel.
-    </p>
   </AdminLayout>
 </Layout>

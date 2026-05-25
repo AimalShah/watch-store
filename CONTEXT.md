@@ -10,18 +10,17 @@
 
 ## Technical
 
-- **Framework**: Astro.
+- **Framework**: Astro 6 (SSR), scaffolded via `create astro`.
+- **UI Layer**: shadcn/ui (Radix primitives + Tailwind 4).
+- **Forms**: react-hook-form + zod validation.
+- **Data Fetching**: TanStack Query (React Query).
+- **Notifications**: sonner toasts.
+- **Animation**: GSAP + Lenis (smooth scroll).
+- **Testing**: Vitest (unit/integration) + Playwright (e2e).
 - **Database & Auth**: Supabase (Postgres DB + Auth + Storage).
 - **Admin Authentication**: Email/password via Supabase Auth.
 - **Admin Location**: `/admin` route within the same Astro app.
 - **Image Storage**: Supabase Storage, uploaded through admin panel.
 - **Order Confirmation**: Admin confirms in admin panel, at which point stock is deducted.
-- **Design System**: See `design/anfal_monochrome/DESIGN.md` for tokens.
-- **Design Assets**: Page mockups (code + screenshots) in `design/*/`.
-  | Catalog | `design/catalog_watches/` |
-  | Home hero | `design/home_page_new_hero_design/` |
-  | Product detail | `design/product_detail_25store/` |
-  | Admin dashboard | `design/admin_dashboard_25store/` |
-- **Design**: Monochrome palette with light/dark mode; focus on product imagery.
-- **Typography**: Roboto Bold (headings), Inter (body).
 - **Hosting**: Vercel (SSR adapter).
+- **Visual Identity**: Premium / luxury feel — to be redesigned from the current monochrome.

@@ -3,53 +3,38 @@ import { createSupabaseServerClient } from '../../../lib/supabase-server';
 
 export const GET: APIRoute = async ({ url, request, cookies }) => {
   const supabase = createSupabaseServerClient(request, cookies);
-
+  const limit = parseInt(url.searchParams.get('limit') || '12');
+  const offset = parseInt(url.searchParams.get('offset') || '0');
   const category = url.searchParams.get('category');
   const search = url.searchParams.get('search');
   const sort = url.searchParams.get('sort') || 'newest';
-  const page = parseInt(url.searchParams.get('page') || '1');
-  const limit = parseInt(url.searchParams.get('limit') || '12');
-  const offset = (page - 1) * limit;
 
-  let countQuery = supabase.from('products').select('*', { count: 'exact', head: true });
-  let dataQuery = supabase
+  let query = supabase
     .from('products')
-    .select('*, categories:category_id(name, slug)');
+    .select('*, categories:category_id(name, slug)', { count: 'exact' });
 
-  if (category) {
-    countQuery = countQuery.eq('category_id', category);
-    dataQuery = dataQuery.eq('category_id', category);
-  }
-
-  if (search) {
-    countQuery = countQuery.ilike('name', `%${search}%`);
-    dataQuery = dataQuery.ilike('name', `%${search}%`);
-  }
+  if (category) query = query.eq('category_id', category);
+  if (search) query = query.ilike('name', `%${search}%`);
 
   switch (sort) {
     case 'price_asc':
-      dataQuery = dataQuery.order('price', { ascending: true });
+      query = query.order('price', { ascending: true });
       break;
     case 'price_desc':
-      dataQuery = dataQuery.order('price', { ascending: false });
+      query = query.order('price', { ascending: false });
       break;
     default:
-      dataQuery = dataQuery.order('created_at', { ascending: false });
+      query = query.order('created_at', { ascending: false });
   }
 
-  const { count, error: countError } = await countQuery;
-  if (countError) {
-    return new Response(JSON.stringify({ error: countError.message }), { status: 500 });
-  }
-
-  const { data, error } = await dataQuery.range(offset, offset + limit - 1);
+  const { data, error, count } = await query.range(offset, offset + limit - 1);
 
   if (error) {
     return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   }
 
   return new Response(
-    JSON.stringify({ data, total: count, page, limit }),
+    JSON.stringify({ data, total: count, limit, offset }),
     { headers: { 'Content-Type': 'application/json' } }
   );
 };

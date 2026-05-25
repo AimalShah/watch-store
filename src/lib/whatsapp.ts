@@ -14,7 +14,7 @@ function encodeMessage(text: string): string {
 
 function buildOrderMessage(order: OrderMessage): string {
   return [
-    `New Order: ${order.productName}`,
+    `*New Order: ${order.productName}*`,
     `Price: $${Number(order.price).toLocaleString()}`,
     `Quantity: ${order.quantity}`,
     `Total: $${order.total.toLocaleString()}`,
