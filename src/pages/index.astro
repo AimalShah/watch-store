@@ -1,11 +1,184 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Anfal Watches — Premium Timepieces">
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="display-lg">Timeless<br />Elegance</h1>
+      <p class="body-lg hero-subtitle">Discover our curated collection of premium timepieces</p>
+      <a href="/watches" class="btn-primary">Explore Collection</a>
+    </div>
+  </section>
+
+  <section class="section featured">
+    <div class="section-inner">
+      <h2 class="headline-lg">Featured Watches</h2>
+      <div class="placeholder-grid">
+        {Array.from({ length: 4 }).map(() => (
+          <div class="placeholder-card">
+            <div class="placeholder-img"></div>
+            <div class="placeholder-meta">
+              <span class="label-sm">Category</span>
+              <h3 class="headline-md">Watch Name</h3>
+              <span class="price-display">$0</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section why">
+    <div class="section-inner">
+      <h2 class="headline-lg">Why Shop With Us</h2>
+      <div class="grid-3">
+        <div class="why-card">
+          <h3 class="headline-md">Authentic Products</h3>
+          <p class="body-md">Every watch is verified for authenticity and quality.</p>
+        </div>
+        <div class="why-card">
+          <h3 class="headline-md">Easy Ordering</h3>
+          <p class="body-md">Browse, order, and pay through WhatsApp with ease.</p>
+        </div>
+        <div class="why-card">
+          <h3 class="headline-md">Fast Delivery</h3>
+          <p class="body-md">Reliable shipping with tracking on every order.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section social">
+    <div class="section-inner">
+      <p class="body-lg">Follow us on Instagram</p>
+      <a href="#" class="btn-secondary">@anfalwatches</a>
+    </div>
+  </section>
 </Layout>
+
+<style>
+  .hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: var(--bg-subtle);
+  }
+
+  .hero-content {
+    max-width: 640px;
+    padding: 0 16px;
+  }
+
+  .hero-subtitle {
+    margin: 16px 0 32px;
+    color: var(--fg-muted);
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 14px 32px;
+    background: var(--accent);
+    color: var(--bg-elevated);
+    text-decoration: none;
+    font-family: Inter, sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: opacity 0.2s;
+  }
+
+  .btn-primary:hover {
+    opacity: 0.85;
+  }
+
+  .btn-secondary {
+    display: inline-block;
+    padding: 12px 28px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    text-decoration: none;
+    font-family: Inter, sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .btn-secondary:hover {
+    background: var(--accent);
+    color: var(--bg-elevated);
+  }
+
+  .section {
+    padding: 64px 16px;
+  }
+
+  .section-inner {
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  .featured {
+    background: var(--bg);
+  }
+
+  .placeholder-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 32px;
+  }
+
+  .placeholder-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .placeholder-img {
+    aspect-ratio: 1;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+  }
+
+  .placeholder-meta {
+    padding: 16px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    margin-top: 32px;
+  }
+
+  .why {
+    background: var(--bg-subtle);
+  }
+
+  .social {
+    text-align: center;
+  }
+
+  @media (min-width: 640px) {
+    .placeholder-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .placeholder-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>
