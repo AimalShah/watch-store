@@ -1,0 +1,12 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { AdminLayout } from '../../components/admin/admin-layout';
+import { CategoryManager } from '../../components/admin/category-manager';
+import '../../styles/admin.css';
+---
+
+<Layout title="Categories — Anfal Watches Admin">
+  <AdminLayout client:load>
+    <CategoryManager client:load />
+  </AdminLayout>
+</Layout>
