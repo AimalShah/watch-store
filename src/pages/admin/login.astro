@@ -1,0 +1,122 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Admin Login — Anfal Watches">
+  <div class="login-page">
+    <div class="login-card">
+      <h1 class="headline-lg">Admin Login</h1>
+      <form id="login-form" method="POST" action="/api/auth/login">
+        <label class="field">
+          <span class="label-sm">Email</span>
+          <input type="email" name="email" required autocomplete="email" />
+        </label>
+        <label class="field">
+          <span class="label-sm">Password</span>
+          <input type="password" name="password" required autocomplete="current-password" />
+        </label>
+        <p id="login-error" class="error-msg" hidden></p>
+        <button type="submit" class="btn-primary" id="login-btn">Sign In</button>
+      </form>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const form = document.getElementById('login-form')! as HTMLFormElement;
+  const errorEl = document.getElementById('login-error')!;
+  const btn = document.getElementById('login-btn')! as HTMLButtonElement;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorEl.hidden = true;
+    btn.disabled = true;
+    btn.textContent = 'Signing in...';
+
+    const data = new FormData(form);
+    try {
+      const res = await fetch(form.action, { method: 'POST', body: data });
+      if (res.redirected) {
+        window.location.href = res.url;
+        return;
+      }
+      const json = await res.json();
+      errorEl.textContent = json.error || 'Login failed';
+      errorEl.hidden = false;
+    } catch {
+      errorEl.textContent = 'Network error. Please try again.';
+      errorEl.hidden = false;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Sign In';
+    }
+  });
+</script>
+
+<style>
+  .login-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 64px - 120px);
+    padding: 24px 16px;
+  }
+
+  .login-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 32px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+  }
+
+  .login-card h1 {
+    margin: 0 0 24px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .field input {
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--fg);
+    font-family: Inter, sans-serif;
+    font-size: 1rem;
+  }
+
+  .field input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .btn-primary {
+    width: 100%;
+    padding: 12px;
+    background: var(--accent);
+    color: var(--bg-elevated);
+    border: none;
+    font-family: Inter, sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .error-msg {
+    color: var(--error);
+    font-size: 0.875rem;
+    margin: 0 0 16px;
+  }
+</style>
