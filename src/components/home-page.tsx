@@ -1,9 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import Lenis from 'lenis';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 interface Product {
   id: string;
@@ -22,61 +17,71 @@ export function HomePage() {
   const [featured, setFeatured] = useState<Product[]>([]);
 
   useEffect(() => {
-    const lenis = new Lenis();
-    function raf(time: number) {
-      lenis.raf(time);
+    let lenis: InstanceType<typeof import('lenis').default> | null = null;
+
+    async function init() {
+      const Lenis = (await import('lenis')).default;
+      const gsap = (await import('gsap')).default;
+      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+      gsap.registerPlugin(ScrollTrigger);
+
+      lenis = new Lenis();
+      function raf(time: number) {
+        lenis!.raf(time);
+        requestAnimationFrame(raf);
+      }
       requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
 
-    const hero = heroRef.current;
-    const heroContent = heroContentRef.current;
-    const cards = cardsRef.current;
-    const why = whyRef.current;
+      const heroContent = heroContentRef.current;
+      const cards = cardsRef.current;
+      const why = whyRef.current;
 
-    if (heroContent) {
-      gsap.fromTo(
-        heroContent.children,
-        { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, stagger: 0.2, ease: 'power2.out' }
-      );
+      if (heroContent) {
+        gsap.fromTo(
+          heroContent.children,
+          { y: 40, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8, stagger: 0.2, ease: 'power2.out' }
+        );
+      }
+
+      if (cards) {
+        const cardEls = cards.querySelectorAll('.featured-card');
+        ScrollTrigger.create({
+          trigger: cards,
+          start: 'top 85%',
+          onEnter: () => {
+            gsap.to(cardEls, {
+              y: 0,
+              opacity: 1,
+              duration: 0.6,
+              stagger: 0.1,
+              ease: 'power2.out',
+            });
+          },
+          once: true,
+        });
+      }
+
+      if (why) {
+        const items = why.querySelectorAll('.why-item');
+        ScrollTrigger.create({
+          trigger: why,
+          start: 'top 85%',
+          onEnter: () => {
+            gsap.to(items, {
+              y: 0,
+              opacity: 1,
+              duration: 0.5,
+              stagger: 0.15,
+              ease: 'power2.out',
+            });
+          },
+          once: true,
+        });
+      }
     }
 
-    if (cards) {
-      const cardEls = cards.querySelectorAll('.featured-card');
-      ScrollTrigger.create({
-        trigger: cards,
-        start: 'top 85%',
-        onEnter: () => {
-          gsap.to(cardEls, {
-            y: 0,
-            opacity: 1,
-            duration: 0.6,
-            stagger: 0.1,
-            ease: 'power2.out',
-          });
-        },
-        once: true,
-      });
-    }
-
-    if (why) {
-      const items = why.querySelectorAll('.why-item');
-      ScrollTrigger.create({
-        trigger: why,
-        start: 'top 85%',
-        onEnter: () => {
-          gsap.to(items, {
-            y: 0,
-            opacity: 1,
-            duration: 0.5,
-            stagger: 0.15,
-            ease: 'power2.out',
-          });
-        },
-        once: true,
-      });
-    }
+    init();
 
     fetch('/api/products?featured=true&limit=8')
       .then((r) => r.json())
@@ -84,8 +89,10 @@ export function HomePage() {
       .catch(() => {});
 
     return () => {
-      lenis.destroy();
-      ScrollTrigger.getAll().forEach((t) => t.kill());
+      if (lenis) lenis.destroy();
+      import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
+        ScrollTrigger.getAll().forEach((t) => t.kill());
+      });
     };
   }, []);
 
