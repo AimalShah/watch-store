@@ -1,13 +1,8 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import { AdminLayout } from '../../components/admin/admin-layout';
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { OrdersPage } from '../../components/admin/admin-orders';
 ---
 
-<Layout title="Orders — Anfal Watches Admin">
-  <AdminLayout client:load>
-    <div class="space-y-6">
-      <h2 class="font-heading text-2xl font-bold tracking-tight">Orders</h2>
-      <p class="text-sm text-muted-foreground">Order management is available in the admin panel.</p>
-    </div>
-  </AdminLayout>
-</Layout>
+<AdminLayout title="Orders — AZ Watch Hub Admin">
+  <OrdersPage client:load />
+</AdminLayout>

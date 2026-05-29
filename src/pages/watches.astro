@@ -1,62 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { PublicCatalog } from '../components/public-catalog';
+import { generatePageMeta } from '../utils/seo';
+const meta = generatePageMeta('watches');
 ---
 
-<Layout title="Watches — Anfal Watches">
-  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-    <div class="mb-12">
-      <p class="mb-2 text-sm font-medium uppercase tracking-[0.2em] text-secondary">Collection</p>
-      <h1 class="font-heading text-4xl font-bold tracking-tight">All Watches</h1>
-    </div>
-    <div class="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
-      <a href="/watch/rolex-submariner-date" class="group">
-        <div class="overflow-hidden rounded-xl border bg-card shadow-sm transition-all duration-300 group-hover:shadow-lg">
-          <div class="aspect-square overflow-hidden bg-muted">
-            <img src="https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=600&q=80" alt="Rolex Submariner Date" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-          </div>
-          <div class="space-y-1 p-4">
-            <p class="text-xs font-medium uppercase tracking-widest text-muted-foreground">Rolex</p>
-            <h2 class="font-heading text-base font-semibold">Rolex Submariner Date</h2>
-            <p class="font-heading text-lg font-bold text-secondary">$10,500</p>
-          </div>
-        </div>
-      </a>
-      <a href="/watch/omega-speedmaster-moonwatch" class="group">
-        <div class="overflow-hidden rounded-xl border bg-card shadow-sm transition-all duration-300 group-hover:shadow-lg">
-          <div class="aspect-square overflow-hidden bg-muted">
-            <img src="https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=600&q=80" alt="Omega Speedmaster Moonwatch" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-          </div>
-          <div class="space-y-1 p-4">
-            <p class="text-xs font-medium uppercase tracking-widest text-muted-foreground">Omega</p>
-            <h2 class="font-heading text-base font-semibold">Omega Speedmaster Moonwatch</h2>
-            <p class="font-heading text-lg font-bold text-secondary">$7,200</p>
-          </div>
-        </div>
-      </a>
-      <a href="/watch/tag-heuer-carrera" class="group">
-        <div class="overflow-hidden rounded-xl border bg-card shadow-sm transition-all duration-300 group-hover:shadow-lg">
-          <div class="aspect-square overflow-hidden bg-muted">
-            <img src="https://images.unsplash.com/photo-1614164185128-e4ec99c2c0e8?w=600&q=80" alt="Tag Heuer Carrera" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-          </div>
-          <div class="space-y-1 p-4">
-            <p class="text-xs font-medium uppercase tracking-widest text-muted-foreground">Tag Heuer</p>
-            <h2 class="font-heading text-base font-semibold">Tag Heuer Carrera</h2>
-            <p class="font-heading text-lg font-bold text-secondary">$5,400</p>
-          </div>
-        </div>
-      </a>
-      <a href="/watch/seiko-presage-cocktail-time" class="group">
-        <div class="overflow-hidden rounded-xl border bg-card shadow-sm transition-all duration-300 group-hover:shadow-lg">
-          <div class="aspect-square overflow-hidden bg-muted">
-            <img src="https://images.unsplash.com/photo-1589913278995-82c7ae8fa70f?w=600&q=80" alt="Seiko Presage Cocktail Time" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-          </div>
-          <div class="space-y-1 p-4">
-            <p class="text-xs font-medium uppercase tracking-widest text-muted-foreground">Seiko</p>
-            <h2 class="font-heading text-base font-semibold">Seiko Presage Cocktail Time</h2>
-            <p class="font-heading text-lg font-bold text-secondary">$450</p>
-          </div>
-        </div>
-      </a>
-    </div>
-  </div>
+<Layout {...meta}>
+  <PublicCatalog client:load />
 </Layout>

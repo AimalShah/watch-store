@@ -2,43 +2,43 @@
 import '../styles/global.css';
 import { QueryProvider } from '../components/query-provider';
 import { Toaster } from '../components/ui/sonner';
+import { PublicNav } from '../components/public-nav';
 
 export interface Props {
   title?: string;
+  description?: string;
+  ogImage?: string;
+  ogType?: string;
 }
 
-const { title } = Astro.props;
+const { title, description, ogImage, ogType } = Astro.props;
+const currentPath = Astro.url.pathname;
+const siteTitle = title || 'AZ Watch Hub — Premium Timepieces';
 ---
 
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title || 'Anfal Watches — Premium Timepieces'}</title>
+    <title>{siteTitle}</title>
+    {description && <meta name="description" content={description} />}
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    {ogType && <meta property="og:type" content={ogType} />}
+    <meta property="og:title" content={siteTitle} />
+    <meta property="og:description" content={description || 'Discover our curated collection of premium timepieces.'} />
   </head>
   <body>
     <QueryProvider>
-      <nav class="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <a href="/" class="font-heading text-xl tracking-wider">ANFAL</a>
-          <div class="flex items-center gap-8">
-            <a href="/" class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Home</a>
-            <a href="/watches" class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Watches</a>
-            <a href="/about" class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">About</a>
-            <a href="/contact" class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Contact</a>
-            <a href="/faq" class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">FAQ</a>
-          </div>
-        </div>
-      </nav>
+      <PublicNav client:load currentPath={currentPath} />
       <slot />
       <footer class="border-t">
         <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           <div class="flex flex-col items-center gap-6 text-center">
-            <span class="font-heading text-lg tracking-wider">ANFAL</span>
+            <span class="font-heading text-lg tracking-wider">AZ WATCH HUB</span>
             <nav class="flex gap-6">
               <a href="/" class="text-xs font-medium uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground">Home</a>
               <a href="/watches" class="text-xs font-medium uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground">Watches</a>
@@ -46,7 +46,7 @@ const { title } = Astro.props;
               <a href="/contact" class="text-xs font-medium uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground">Contact</a>
               <a href="/faq" class="text-xs font-medium uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground">FAQ</a>
             </nav>
-            <p class="text-xs text-muted-foreground">Powered by Anfal Watches</p>
+            <p class="text-xs text-muted-foreground">Powered by AZ Watch Hub</p>
           </div>
         </div>
       </footer>

@@ -13,6 +13,16 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    optimizeDeps: {
+      include: [
+        '@tanstack/react-query',
+        '@tanstack/react-table',
+        'react-hook-form',
+        'lucide-react',
+        'sonner',
+        'zustand',
+      ],
+    },
   },
 
   adapter: vercel(),

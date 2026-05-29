@@ -5,7 +5,7 @@
 const SUPABASE_URL = process.env.PUBLIC_SUPABASE_URL || 'https://kwvlbxuoxudjxskyicue.supabase.co';
 const SUPABASE_ANON_KEY = process.env.PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3dmxieHVveHVkanhza3lpY3VlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3MTMwNTgsImV4cCI6MjA5NTI4OTA1OH0.dSly3eXp9b3GDXe3tb4GQF2b_BKQZU6xCocHy23PQWY';
 
-const email = 'admin@anfalwatches.com';
+const email = 'admin@azwatchhub.com';
 const password = 'Admin123!';
 
 const { createClient } = await import('@supabase/supabase-js');
@@ -33,7 +33,7 @@ if (error) {
 }
 
 console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-console.log('  Email:    admin@anfalwatches.com');
+console.log('  Email:    admin@azwatchhub.com');
 console.log('  Password: Admin123!');
 console.log('  Sign in:  http://localhost:4321/admin/login');
 console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');

@@ -1,0 +1,10 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { CheckoutPage } from '../components/checkout-page';
+import { generatePageMeta } from '../utils/seo';
+const meta = generatePageMeta('checkout');
+---
+
+<Layout {...meta}>
+  <CheckoutPage client:load />
+</Layout>

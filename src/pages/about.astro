@@ -1,13 +1,15 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { generatePageMeta } from '../utils/seo';
+const meta = generatePageMeta('about');
 ---
 
-<Layout title="About — Anfal Watches">
+<Layout {...meta}>
   <div class="mx-auto max-w-3xl px-4 py-24 sm:px-6 lg:px-8">
     <p class="mb-2 text-sm font-medium uppercase tracking-[0.2em] text-secondary">About</p>
     <h1 class="mb-8 font-heading text-4xl font-bold tracking-tight">Our Story</h1>
     <div class="space-y-4 text-muted-foreground">
-      <p>Anfal Watches brings you a curated selection of premium timepieces from the world's most respected brands. We believe a watch is more than a timekeeper — it's a statement of style, a companion through life's moments.</p>
+      <p>AZ Watch Hub brings you a curated selection of premium timepieces from the world's most respected brands. We believe a watch is more than a timekeeper — it's a statement of style, a companion through life's moments.</p>
       <p>Every watch in our collection is verified for authenticity and quality, ensuring you receive nothing but the best.</p>
     </div>
   </div>

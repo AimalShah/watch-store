@@ -1,0 +1,24 @@
+---
+import AdminLayout from '@/layouts/AdminLayout.astro';
+import { ProductForm } from '@/components/admin/product-form';
+import { createSupabaseServerClient } from '@/lib/supabase-server';
+
+const supabase = createSupabaseServerClient(Astro.request, Astro.cookies);
+const { data: product } = await supabase
+  .from('products')
+  .select('id, name, slug, description, price, stock, category_id, featured, images')
+  .eq('slug', Astro.params.slug)
+  .single();
+---
+
+<AdminLayout title="Edit Product — AZ Watch Hub Admin">
+  {product ? (
+    <ProductForm client:load product={JSON.parse(JSON.stringify(product))} />
+  ) : (
+    <div class="flex min-h-screen">
+      <div class="flex-1 p-6 md:p-8">
+        <p class="text-center text-muted-foreground">Product not found.</p>
+      </div>
+    </div>
+  )}
+</AdminLayout>

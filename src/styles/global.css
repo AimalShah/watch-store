@@ -1,52 +1,51 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-heading: 'Playfair Display', serif;
   --font-body: 'Inter', sans-serif;
 
-  --color-background: #faf9f7;
-  --color-foreground: #1a1a1a;
+  --color-background: #ffffff;
+  --color-foreground: #09090b;
   --color-card: #ffffff;
-  --color-card-foreground: #1a1a1a;
+  --color-card-foreground: #09090b;
   --color-popover: #ffffff;
-  --color-popover-foreground: #1a1a1a;
-  --color-primary: #1a1a1a;
-  --color-primary-foreground: #faf9f7;
-  --color-secondary: #c9a96e;
-  --color-secondary-foreground: #1a1a1a;
-  --color-muted: #f1f0ed;
-  --color-muted-foreground: #737373;
-  --color-accent: #c9a96e;
-  --color-accent-foreground: #1a1a1a;
-  --color-destructive: #dc2626;
-  --color-destructive-foreground: #faf9f7;
-  --color-border: #e5e4e1;
-  --color-input: #e5e4e1;
-  --color-ring: #1a1a1a;
+  --color-popover-foreground: #09090b;
+  --color-primary: #09090b;
+  --color-primary-foreground: #fafafa;
+  --color-secondary: #d4a853;
+  --color-secondary-foreground: #09090b;
+  --color-muted: #f4f4f5;
+  --color-muted-foreground: #52525b;
+  --color-accent: #d4a853;
+  --color-accent-foreground: #09090b;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #fafafa;
+  --color-border: #e4e4e7;
+  --color-input: #e4e4e7;
+  --color-ring: #09090b;
   --radius: 0.5rem;
 }
 
 .dark {
-  --color-background: #121212;
-  --color-foreground: #f5f5f0;
-  --color-card: #1e1e1e;
-  --color-card-foreground: #f5f5f0;
-  --color-popover: #1e1e1e;
-  --color-popover-foreground: #f5f5f0;
-  --color-primary: #f5f5f0;
-  --color-primary-foreground: #121212;
-  --color-secondary: #c9a96e;
-  --color-secondary-foreground: #121212;
-  --color-muted: #2a2a2a;
-  --color-muted-foreground: #a3a3a3;
-  --color-accent: #c9a96e;
-  --color-accent-foreground: #121212;
+  --color-background: #09090b;
+  --color-foreground: #fafafa;
+  --color-card: #18181b;
+  --color-card-foreground: #fafafa;
+  --color-popover: #18181b;
+  --color-popover-foreground: #fafafa;
+  --color-primary: #fafafa;
+  --color-primary-foreground: #09090b;
+  --color-secondary: #8a7a3a;
+  --color-secondary-foreground: #fafafa;
+  --color-muted: #27272a;
+  --color-muted-foreground: #a1a1aa;
+  --color-accent: #8a7a3a;
+  --color-accent-foreground: #fafafa;
   --color-destructive: #ef4444;
-  --color-destructive-foreground: #f5f5f0;
-  --color-border: #333333;
-  --color-input: #333333;
-  --color-ring: #f5f5f0;
+  --color-destructive-foreground: #fafafa;
+  --color-border: #27272a;
+  --color-input: #27272a;
+  --color-ring: #d4d4d8;
 }
 
 @layer base {
@@ -55,8 +54,5 @@
   }
   body {
     @apply bg-background text-foreground font-body;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-heading;
   }
 }

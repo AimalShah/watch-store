@@ -1,13 +1,8 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import { AdminLayout } from '../../components/admin/admin-layout';
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { StockPage } from '../../components/admin/admin-stock';
 ---
 
-<Layout title="Stock — Anfal Watches Admin">
-  <AdminLayout client:load>
-    <div class="space-y-6">
-      <h2 class="font-heading text-2xl font-bold tracking-tight">Stock Management</h2>
-      <p class="text-sm text-muted-foreground">Stock management is available in the admin panel.</p>
-    </div>
-  </AdminLayout>
-</Layout>
+<AdminLayout title="Stock — AZ Watch Hub Admin">
+  <StockPage client:load />
+</AdminLayout>

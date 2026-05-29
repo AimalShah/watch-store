@@ -1,5 +1,5 @@
 // Seed script — run with: node src/seed.mjs
-// Populates the database with placeholder watches and categories
+// Populates the database with categories and sample watches
 
 const SUPABASE_URL = process.env.PUBLIC_SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.PUBLIC_SUPABASE_ANON_KEY;
@@ -16,129 +16,159 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
 
 const categories = [
   { name: 'Rolex', slug: 'rolex' },
-  { name: 'Omega', slug: 'omega' },
-  { name: 'Tag Heuer', slug: 'tag-heuer' },
-  { name: 'Seiko', slug: 'seiko' },
-  { name: 'Citizen', slug: 'citizen' },
+  { name: 'Hublot', slug: 'hublot' },
+  { name: 'Tissot', slug: 'tissot' },
 ];
 
-const watches = [
+const products = [
   {
     name: 'Rolex Submariner Date',
     slug: 'rolex-submariner-date',
-    description: 'The iconic diver\'s watch with a unidirectional rotatable bezel and Oystersteel construction.',
+    description: 'The iconic diver\'s watch with a unidirectional rotatable bezel, Cerachrom insert, and Oystersteel construction. Water-resistant to 300 meters with automatic movement.',
     price: 10500,
     stock: 3,
     featured: true,
+    categorySlug: 'rolex',
     images: [
       'https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=600&q=80',
-      'https://images.unsplash.com/photo-1587836374828-4dbafa94cfbe?w=600&q=80',
-    ],
-  },
-  {
-    name: 'Omega Speedmaster Moonwatch',
-    slug: 'omega-speedmaster-moonwatch',
-    description: 'The legendary chronograph worn on the moon. Hesalite crystal with manual-winding movement.',
-    price: 7200,
-    stock: 5,
-    featured: true,
-    images: [
       'https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=600&q=80',
-      'https://images.unsplash.com/photo-1589137279397-1520e0e4e3d9?w=600&q=80',
-    ],
-  },
-  {
-    name: 'Tag Heuer Carrera',
-    slug: 'tag-heuer-carrera',
-    description: 'A racing-inspired chronograph with a 44mm stainless steel case and automatic movement.',
-    price: 5400,
-    stock: 4,
-    featured: true,
-    images: [
-      'https://images.unsplash.com/photo-1614164185128-e4ec99c2c0e8?w=600&q=80',
-      'https://images.unsplash.com/photo-1612036782180-6f08205f232b?w=600&q=80',
-    ],
-  },
-  {
-    name: 'Seiko Presage Cocktail Time',
-    slug: 'seiko-presage-cocktail-time',
-    description: 'Inspired by classic cocktails, this timepiece features a stunning textured dial and automatic movement.',
-    price: 450,
-    stock: 8,
-    featured: true,
-    images: [
-      'https://images.unsplash.com/photo-1589913278995-82c7ae8fa70f?w=600&q=80',
-      'https://images.unsplash.com/photo-1623998021446-45f68c0e5b61?w=600&q=80',
     ],
   },
   {
     name: 'Rolex Daytona',
     slug: 'rolex-daytona',
-    description: 'The ultimate racing chronograph with a 40mm Oystersteel case and Oyster bracelet.',
+    description: 'The ultimate racing chronograph with a 40mm Oystersteel case, black ceramic bezel, and Oyster bracelet. Cosmograph Daytona — born for the track.',
     price: 28500,
     stock: 2,
     featured: true,
+    categorySlug: 'rolex',
     images: [
-      'https://images.unsplash.com/photo-1587836374828-4dbafa94cfbe?w=600&q=80',
+      'https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=600&q=80',
       'https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=600&q=80',
-    ],
-  },
-  {
-    name: 'Omega Seamaster Diver 300M',
-    slug: 'omega-seamaster-diver-300m',
-    description: 'A professional diver\'s watch with helium escape valve and ceramic bezel.',
-    price: 5800,
-    stock: 4,
-    featured: false,
-    images: [
-      'https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=600&q=80',
-      'https://images.unsplash.com/photo-1589137279397-1520e0e4e3d9?w=600&q=80',
-    ],
-  },
-  {
-    name: 'Tag Heuer Monaco',
-    slug: 'tag-heuer-monaco',
-    description: 'The iconic square-cased chronograph made famous by Steve McQueen.',
-    price: 6750,
-    stock: 3,
-    featured: false,
-    images: [
-      'https://images.unsplash.com/photo-1614164185128-e4ec99c2c0e8?w=600&q=80',
-      'https://images.unsplash.com/photo-1612036782180-6f08205f232b?w=600&q=80',
-    ],
-  },
-  {
-    name: 'Seiko 5 Sports GMT',
-    slug: 'seiko-5-sports-gmt',
-    description: 'An affordable GMT watch with 24-jewel automatic movement and 100m water resistance.',
-    price: 375,
-    stock: 12,
-    featured: false,
-    images: [
-      'https://images.unsplash.com/photo-1589913278995-82c7ae8fa70f?w=600&q=80',
-      'https://images.unsplash.com/photo-1623998021446-45f68c0e5b61?w=600&q=80',
-    ],
-  },
-  {
-    name: 'Citizen Promaster Diver',
-    slug: 'citizen-promaster-diver',
-    description: 'Eco-drive dive watch with ISO-rated 200m water resistance and luminous hands.',
-    price: 375,
-    stock: 10,
-    featured: false,
-    images: [
-      'https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=600&q=80',
     ],
   },
   {
     name: 'Rolex Datejust 41',
     slug: 'rolex-datejust-41',
-    description: 'The classic dress watch with a fluted bezel and Jubilee bracelet in Oystersteel.',
+    description: 'The classic dress watch with a fluted bezel, Jubilee bracelet, and bright blue dial. Timeless elegance in Oystersteel.',
     price: 12500,
     stock: 2,
-    featured: false,
+    featured: true,
+    categorySlug: 'rolex',
     images: [
-      'https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=600&q=80',
+      'https://images.unsplash.com/photo-1585123334904-845d60e97b29?w=600&q=80',
+    ],
+  },
+  {
+    name: 'Rolex GMT-Master II',
+    slug: 'rolex-gmt-master-ii',
+    description: 'The pilot\'s watch with a two-tone Cerachrom bezel and independent 24-hour hand. Track three time zones simultaneously.',
+    price: 15500,
+    stock: 4,
+    featured: false,
+    categorySlug: 'rolex',
+    images: [
+      'https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=600&q=80',
+    ],
+  },
+  {
+    name: 'Hublot Big Bang Unico',
+    slug: 'hublot-big-bang-unico',
+    description: 'A bold 45mm chronograph with skeletonised dial, ceramic bezel, and the manufacture Unico HUB1242 movement.',
+    price: 18500,
+    stock: 3,
+    featured: true,
+    categorySlug: 'hublot',
+    images: [
+      'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80',
+      'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=600&q=80',
+    ],
+  },
+  {
+    name: 'Hublot Classic Fusion',
+    slug: 'hublot-classic-fusion',
+    description: 'An elegant 45mm timepiece with titanium case, sunray satin-finished dial, and rubber strap.',
+    price: 12500,
+    stock: 5,
+    featured: true,
+    categorySlug: 'hublot',
+    images: [
+      'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=600&q=80',
+      'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80',
+    ],
+  },
+  {
+    name: 'Hublot Spirit of Big Bang',
+    slug: 'hublot-spirit-of-big-bang',
+    description: 'A tonneau-shaped chronograph with black ceramic case, skeleton dial, and rubber strap.',
+    price: 22000,
+    stock: 2,
+    featured: false,
+    categorySlug: 'hublot',
+    images: [
+      'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80',
+    ],
+  },
+  {
+    name: 'Hublot Big Bang Aero Bang',
+    slug: 'hublot-big-bang-aero-bang',
+    description: 'A 44mm skeletonised chronograph with microblasted black ceramic and titanium case.',
+    price: 14900,
+    stock: 4,
+    featured: false,
+    categorySlug: 'hublot',
+    images: [
+      'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=600&q=80',
+    ],
+  },
+  {
+    name: 'Tissot PRX Powermatic 80',
+    slug: 'tissot-prx-powermatic-80',
+    description: 'A resurrected 1970s icon with a 40mm steel case, integrated bracelet, and automatic movement with 80-hour power reserve.',
+    price: 695,
+    stock: 10,
+    featured: true,
+    categorySlug: 'tissot',
+    images: [
+      'https://images.unsplash.com/photo-1585123334904-845d60e97b29?w=600&q=80',
+      'https://images.unsplash.com/photo-1580655653885-65763b2597d0?w=600&q=80',
+    ],
+  },
+  {
+    name: 'Tissot Le Locle Powermatic 80',
+    slug: 'tissot-le-locle-powermatic-80',
+    description: 'An automatic dress watch with roman numerals, delicate guilloché dial, and scratch-resistant sapphire crystal.',
+    price: 525,
+    stock: 8,
+    featured: true,
+    categorySlug: 'tissot',
+    images: [
+      'https://images.unsplash.com/photo-1580655653885-65763b2597d0?w=600&q=80',
+      'https://images.unsplash.com/photo-1585123334904-845d60e97b29?w=600&q=80',
+    ],
+  },
+  {
+    name: 'Tissot Seastar 1000',
+    slug: 'tissot-seastar-1000',
+    description: 'A professional dive watch with 300m water resistance, unidirectional bezel, and automatic movement.',
+    price: 425,
+    stock: 12,
+    featured: false,
+    categorySlug: 'tissot',
+    images: [
+      'https://images.unsplash.com/photo-1585123334904-845d60e97b29?w=600&q=80',
+    ],
+  },
+  {
+    name: 'Tissot Gentleman Powermatic 80',
+    slug: 'tissot-gentleman-powermatic-80',
+    description: 'A versatile everyday automatic with a 40mm steel case, sunray dial, and 80-hour power reserve.',
+    price: 625,
+    stock: 7,
+    featured: false,
+    categorySlug: 'tissot',
+    images: [
+      'https://images.unsplash.com/photo-1580655653885-65763b2597d0?w=600&q=80',
     ],
   },
 ];
@@ -152,30 +182,43 @@ for (const cat of categories) {
 }
 
 // Get category IDs
-const { data: savedCategories } = await supabase.from('categories').select('id, name, slug');
+const { data: savedCategories } = await supabase.from('categories').select('id, slug');
 const categoryMap = new Map(savedCategories?.map((c) => [c.slug, c.id]));
+
+if (!categoryMap.size) {
+  console.error('No categories found — aborting');
+  process.exit(1);
+}
 
 // Seed products
 console.log('\nSeeding products...');
-for (const watch of watches) {
+for (const product of products) {
   const { data: existing } = await supabase
     .from('products')
     .select('id')
-    .eq('slug', watch.slug)
+    .eq('slug', product.slug)
     .single();
 
   if (existing) {
-    console.log(`  ○ ${watch.name} (exists, skipping)`);
+    console.log(`  ○ ${product.name} (exists, skipping)`);
+    continue;
+  }
+
+  const { categorySlug, ...productData } = product;
+  const categoryId = categoryMap.get(categorySlug);
+
+  if (!categoryId) {
+    console.error(`  ✗ ${product.name} — category "${categorySlug}" not found`);
     continue;
   }
 
   const { error } = await supabase.from('products').insert({
-    ...watch,
-    category_id: categoryMap.get(watch.slug.split('-')[0]) || categoryMap.get('rolex'),
+    ...productData,
+    category_id: categoryId,
   });
 
-  if (error) console.error(`  ✗ ${watch.name} — ${error.message}`);
-  else console.log(`  ✓ ${watch.name}`);
+  if (error) console.error(`  ✗ ${product.name} — ${error.message}`);
+  else console.log(`  ✓ ${product.name}`);
 }
 
 console.log('\nDone!');

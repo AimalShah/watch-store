@@ -2,10 +2,12 @@
 import Layout from '../../layouts/Layout.astro';
 import { ProductDetail } from '../../components/product-detail';
 import { createSupabaseServerClient } from '../../lib/supabase-server';
+import { generateProductMeta } from '../../utils/seo';
 
 const supabase = createSupabaseServerClient(Astro.request, Astro.cookies);
 
 let product;
+let meta;
 try {
   const { data } = await supabase
     .from('products')
@@ -13,17 +15,21 @@ try {
     .eq('slug', Astro.params.slug)
     .single();
   product = data;
+  if (product) {
+    meta = generateProductMeta(product);
+  }
 } catch {
   product = null;
 }
 ---
 
-{product ? (
-  <Layout title={`${product.name} — Anfal Watches`}>
+{product && meta ? (
+  <Layout title={meta.title} description={meta.description} ogImage={meta.ogImage} ogType={meta.ogType}>
     <ProductDetail
       client:load
       productId={product.id}
       productName={product.name}
+      slug={product.slug}
       price={product.price}
       stock={product.stock}
       images={product.images || []}
@@ -32,7 +38,7 @@ try {
     />
   </Layout>
 ) : (
-  <Layout title="Not Found — Anfal Watches">
+  <Layout title="Not Found — AZ Watch Hub">
     <div class="mx-auto max-w-3xl px-4 py-24 text-center sm:px-6 lg:px-8">
       <h1 class="mb-4 font-heading text-4xl font-bold tracking-tight">Product not found</h1>
       <a href="/watches" class="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground">Browse all watches</a>

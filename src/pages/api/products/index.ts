@@ -15,6 +15,7 @@ export const GET: APIRoute = async ({ url, request, cookies }) => {
 
   if (category) query = query.eq('category_id', category);
   if (search) query = query.ilike('name', `%${search}%`);
+  if (url.searchParams.get('featured') === 'true') query = query.eq('featured', true);
 
   switch (sort) {
     case 'price_asc':
