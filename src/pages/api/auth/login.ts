@@ -1,6 +1,11 @@
 import type { APIRoute } from 'astro';
 import { createSupabaseServerClient } from '../../../lib/supabase-server';
 
+function expectsJson(request: Request): boolean {
+  const accept = request.headers.get('accept') ?? '';
+  return accept.includes('application/json');
+}
+
 export const POST: APIRoute = async ({ request, cookies, redirect }) => {
   const supabase = createSupabaseServerClient(request, cookies);
 
@@ -20,6 +25,13 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
   if (error) {
     return new Response(JSON.stringify({ error: error.message }), {
       status: 401,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  if (expectsJson(request)) {
+    return new Response(JSON.stringify({ success: true, redirect: '/admin' }), {
+      status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
   }

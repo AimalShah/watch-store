@@ -1,8 +1,12 @@
 import type { APIRoute } from 'astro';
-import { createSupabaseServerClient } from '../../../lib/supabase-server';
+import { createSupabaseServerClient, requireAdmin } from '../../../lib/supabase-server';
 
 export const PATCH: APIRoute = async ({ params, request, cookies }) => {
   const supabase = createSupabaseServerClient(request, cookies);
+
+  const unauthorized = await requireAdmin(supabase);
+  if (unauthorized) return unauthorized;
+
   const body = await request.json();
 
   if (!body.name) {
@@ -29,6 +33,9 @@ export const PATCH: APIRoute = async ({ params, request, cookies }) => {
 
 export const DELETE: APIRoute = async ({ params, request, cookies }) => {
   const supabase = createSupabaseServerClient(request, cookies);
+
+  const unauthorized = await requireAdmin(supabase);
+  if (unauthorized) return unauthorized;
 
   const { error } = await supabase
     .from('categories')

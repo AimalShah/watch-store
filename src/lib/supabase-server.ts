@@ -30,3 +30,16 @@ export function createSupabaseServerClient(request: Request, cookies: AstroCooki
     },
   });
 }
+
+export async function requireAdmin(
+  supabase: ReturnType<typeof createSupabaseServerClient>,
+): Promise<Response | null> {
+  const { data, error } = await supabase.auth.getUser();
+  if (error || !data.user) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+  return null;
+}

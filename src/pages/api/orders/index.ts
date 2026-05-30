@@ -1,9 +1,13 @@
 import type { APIRoute } from 'astro';
-import { createSupabaseServerClient } from '../../../lib/supabase-server';
+import { createSupabaseServerClient, requireAdmin } from '../../../lib/supabase-server';
 import { buildAdminUrl } from '../../../lib/whatsapp';
 
 export const GET: APIRoute = async ({ url, request, cookies }) => {
   const supabase = createSupabaseServerClient(request, cookies);
+
+  const unauthorized = await requireAdmin(supabase);
+  if (unauthorized) return unauthorized;
+
   const status = url.searchParams.get('status');
 
   let query = supabase

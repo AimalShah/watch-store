@@ -1,9 +1,12 @@
 import type { APIRoute } from 'astro';
-import { createSupabaseServerClient } from '../../../../lib/supabase-server';
+import { createSupabaseServerClient, requireAdmin } from '../../../../lib/supabase-server';
 import { buildCustomerUrl } from '../../../../lib/whatsapp';
 
 export const POST: APIRoute = async ({ params, request, cookies }) => {
   const supabase = createSupabaseServerClient(request, cookies);
+
+  const unauthorized = await requireAdmin(supabase);
+  if (unauthorized) return unauthorized;
 
   const { data: order, error: orderError } = await supabase
     .from('orders')

@@ -2,22 +2,28 @@ import { defineMiddleware } from 'astro/middleware';
 import { createSupabaseServerClient } from './lib/supabase-server';
 
 const ADMIN_LOGIN = '/admin/login';
+const PROTECTED_PREFIXES = ['/admin', '/api/admin'];
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const { url, request, cookies, redirect } = context;
 
-  if (!url.pathname.startsWith('/admin')) {
-    return next();
-  }
+  const isProtected = PROTECTED_PREFIXES.some((p) => url.pathname.startsWith(p));
 
-  if (url.pathname === ADMIN_LOGIN) {
+  if (!isProtected) {
     return next();
   }
 
   const supabase = createSupabaseServerClient(request, cookies);
-  const { data } = await supabase.auth.getSession();
+  const { data, error } = await supabase.auth.getUser();
 
-  if (!data.session) {
+  if (url.pathname === ADMIN_LOGIN) {
+    if (data.user) {
+      return redirect('/admin');
+    }
+    return next();
+  }
+
+  if (error || !data.user) {
     return redirect(ADMIN_LOGIN);
   }
 

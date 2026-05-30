@@ -35,12 +35,16 @@ import Layout from '../../layouts/Layout.astro';
 
     const data = new FormData(form);
     try {
-      const res = await fetch(form.action, { method: 'POST', body: data });
-      if (res.redirected) {
-        window.location.href = res.url;
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { Accept: 'application/json' },
+      });
+      const json = await res.json();
+      if (json.success && json.redirect) {
+        window.location.href = json.redirect;
         return;
       }
-      const json = await res.json();
       errorEl.textContent = json.error || 'Login failed';
       errorEl.hidden = false;
     } catch {

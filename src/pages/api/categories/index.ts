@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { createSupabaseServerClient } from '../../../lib/supabase-server';
+import { createSupabaseServerClient, requireAdmin } from '../../../lib/supabase-server';
 
 export const GET: APIRoute = async ({ request, cookies }) => {
   const supabase = createSupabaseServerClient(request, cookies);
@@ -19,6 +19,10 @@ export const GET: APIRoute = async ({ request, cookies }) => {
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   const supabase = createSupabaseServerClient(request, cookies);
+
+  const unauthorized = await requireAdmin(supabase);
+  if (unauthorized) return unauthorized;
+
   const body = await request.json();
 
   if (!body.name) {
